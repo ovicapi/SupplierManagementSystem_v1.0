@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -274,6 +275,15 @@ public class SMS_frame extends JFrame {
 				else {
 					nrOreLucruPerioada.setText(workingHoursPeriod);			
 				}
+				//_____________		
+				
+				String[][] arrayTest = GetTable.ArrayMinusRows(idDev);
+//				for(String[] r : arrayTest) {
+//					System.out.println(Arrays.toString(r));
+//				}
+		//_________					
+			
+			
 			}
 		});
 		
