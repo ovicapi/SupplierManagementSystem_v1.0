@@ -10,7 +10,6 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,7 +17,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -40,7 +41,7 @@ public class SMS_frame extends JFrame {
 	
 	final DecimalFormat df2 = new DecimalFormat ("0.00");
 	final DecimalFormat df = new DecimalFormat ("###,###");
-
+	
 	public SMS_frame() throws InvalidFormatException, FileNotFoundException {
 
 		setTitle("Supplier Management System");
@@ -209,6 +210,8 @@ public class SMS_frame extends JFrame {
 		nrOreLucruPerioada.setOpaque(false);
 		nrOreLucruPerioada.setForeground(Color.BLACK);
 		
+		String[][] arrayMinusCols = GetTable.CutTheColumns();
+		
 		selectDev.addItemListener(new ItemListener() {								//Add a Listener for the JComboBox "SelectDev"
 			public void itemStateChanged(ItemEvent e_selectDev) {
 				dev.setText((String) e_selectDev.getItem());
@@ -275,15 +278,49 @@ public class SMS_frame extends JFrame {
 				else {
 					nrOreLucruPerioada.setText(workingHoursPeriod);			
 				}
-				//_____________		
+
+ 				int counter = GetTable.CountIdDevRows(arrayMinusCols, idDev);
+
+				String[][] arrayMinusRows = GetTable.CutTheRows(arrayMinusCols, counter, idDev);
 				
-				String[][] arrayTest = GetTable.ArrayMinusRows(idDev);
-//				for(String[] r : arrayTest) {
-//					System.out.println(Arrays.toString(r));
-//				}
-		//_________					
-			
-			
+				String[] columnNames = {"ID dezvoltator",
+		                "Proiect",
+		                "Data",
+		                "Valoare moneda raport",
+		                "Moneda raport",
+		                "Valoare moneda obiect",
+		                "Moneda obiect",
+		                "Valoare moneda tranzacite",
+		                "Moneda tranzactie",
+		                "Ore lucrate",
+		                "Nr. factura"};
+
+				JTable table = new JTable(arrayMinusRows, columnNames);
+		        table.setPreferredScrollableViewportSize(new Dimension(1300, 800));
+		        table.setFillsViewportHeight(true);
+		        table.setVisible(true);
+
+		        JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 700, 1300, 800);
+		        
+		        scrollPane.add(table);
+		        bottomPanel.add(scrollPane);
+//__________________
+		        
+		        int numRows = table.getRowCount();
+		        int numCols = table.getColumnCount();
+		        javax.swing.table.TableModel model = table.getModel();
+
+		        System.out.println("Value of data: ");
+		        for (int i=0; i < numRows; i++) {
+		            System.out.print("    row " + i + ":");
+		            	for (int j=0; j < numCols; j++) {
+		            		System.out.print("  " + model.getValueAt(i, j));
+		            }
+		            System.out.println();
+		        }
+		        System.out.println("--------------------------");
+//___________________		      
 			}
 		});
 		
@@ -322,6 +359,8 @@ public class SMS_frame extends JFrame {
 		topPanel.add(nrOreLucruLabel);
 		topPanel.add(nrOreLucru);
 		topPanel.add(nrOreLucruPerioada);
+		
+//		bottomPanel.add(scrollPane);
 
 		splitPane.add(topPanel);
 		splitPane.add(bottomPanel);

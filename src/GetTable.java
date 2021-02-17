@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class GetTable {
 
-	private static String[][] ArrayMinusCols () {
+	public static String[][] CutTheColumns () {
 		
 		String[][] initArray = SMS_main.sheet_inreg;
 		int rows = initArray.length;																				// numarul de randuri din arrayul initial
@@ -36,7 +36,7 @@ public class GetTable {
 		return arrayMinusCols;
 	}
 	
-	private static int Counter (String[][] arrayMinusCols, String idDev) {
+	public static int CountIdDevRows (String[][] arrayMinusCols, String idDev) {
 		
 		// Calculez numarul de aparitii al id-ului de subcontractor in prima coloana din array-ul de mai sus
 		
@@ -49,46 +49,23 @@ public class GetTable {
 		return counter;
 	}
 
-	public static String[][] ArrayMinusRows (String idDev) {
-		
-		String[][] arrayMinusCols = ArrayMinusCols();
-		int rows_init = arrayMinusCols.length;
-		int cols = arrayMinusCols[0].length;
-		int rows_fin = Counter(arrayMinusCols, idDev);
-		String[][] arrayMinusRows = new String[rows_fin][cols]; 
+	public static String[][] CutTheRows (String[][] arrayMinusCols, int counter, String idDev) {
 
-		for(String[] r : arrayMinusCols) {
-			System.out.println(Arrays.toString(r));
-		}
-		System.out.println(idDev);
-		System.out.println(rows_fin);
-		System.out.println(cols);
+		int rows_init = arrayMinusCols.length;
+		int columns = arrayMinusCols[0].length;
+		int rows_fin = counter;
+		String[][] arrayMinusRows = new String[rows_fin][columns]; 
 
 		int t = 0;
 		for (int i = 0; i < rows_init; i++) {
 			if (arrayMinusCols[i][0].contentEquals(idDev)) {
-				for(int j = 0; j < cols; j++) {
+				for(int j = 0; j < columns; j++) {
 					arrayMinusRows[t][j] = arrayMinusCols[i][j];
 				}
 				t++;
 			}
-
-/*				
-		for (int k = 0; k < rows_fin; k++) {
-			for (int i = 0; i < rows_init; i++) {
-				if (arrayMinusCols[i][0].contentEquals(idDev)) {
-					for(int j = 0; j < cols; j++) {
-						arrayMinusRows[k][j] = arrayMinusCols[i][j];
-					}
-					k++;
-				}
-			}
-		*/
-		}
-		for(String[] r : arrayMinusRows) {
-			System.out.println(Arrays.toString(r));
 		}
 		return arrayMinusRows;
 	}
 }
-	
+
