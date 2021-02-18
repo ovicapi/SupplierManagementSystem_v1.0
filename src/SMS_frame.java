@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -285,22 +286,41 @@ public class SMS_frame extends JFrame {
 
 				String[][] arrayMinusRows = GetTable.CutTheRows(arrayMinusCols, counter, idDev);
 				
-				String[] columnNames = {"ID dezvoltator",
-		                "Proiect",
-		                "Data",
-		                "Valoare moneda raport",
-		                "Moneda raport",
-		                "Valoare moneda obiect",
-		                "Moneda obiect",
-		                "Valoare moneda tranzacite",
-		                "Moneda tranzactie",
-		                "Ore lucrate",
-		                "Nr. factura"};
+				String[] columnNames = new String[11];
+					columnNames[0] = "<html><center>ID<br>dezvoltator</center></html>";
+					columnNames[1] = "<html><center>Proiect</center></html>";   
+					columnNames[2] = "<html><center>Data</center></html>";
+					columnNames[3] = "<html><center>Valoare<br>moneda<br>raport</center></html>";
+					columnNames[4] = "<html><center>Moneda<br>raport</center></html>";
+					columnNames[5] = "<html><center>Valoare<br>moneda<br>obiect</center></html>";
+					columnNames[6] = "<html><center>Moneda<br>obiect</center></html>";
+					columnNames[7] = "<html><center>Valoare<br>moneda<br>tranzactie</center></html>";
+					columnNames[8] = "<html><center>Moneda<br>tranzactie</center></html>";
+					columnNames[9] = "<html><center>Ore<br>lucrate</center></html>";
+					columnNames[10] = "<html><center>Nr.<br>factura</center></html>";
 
 				JTable table = new JTable(arrayMinusRows, columnNames);
-				table.setPreferredScrollableViewportSize(new Dimension(1200, 600));
+				table.setPreferredScrollableViewportSize(new Dimension(1300, 600));
 		        table.setFillsViewportHeight(true);
 		        table.setVisible(true);
+		        table.setBackground(new Color(244,244,244));
+		        table.setGridColor(getBackground());
+		        table.setFont(new Font("Calibri Light", Font.PLAIN, 15));
+		        table.setRowHeight(28);
+		        table.getTableHeader().setFont(new Font("Calibri Light", Font.BOLD, 15));
+		        table.getTableHeader().setPreferredSize(new Dimension(1300, 60));
+		        
+		        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		        for (int i = 3; i <= 9; i = i + 2) {
+		        	table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+		        }
+		        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		        for (int i = 0; i <= 10; i = i + 2) {
+		        	table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		        }
+		        
 		        JScrollPane scrollPane = new JScrollPane(table);
 		        bottomPanel.add(scrollPane);
 				}
