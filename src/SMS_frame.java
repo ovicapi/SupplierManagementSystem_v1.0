@@ -64,7 +64,7 @@ public class SMS_frame extends JFrame {
 		bottomPanel = new JPanel();													// Construct the bottomPanel that will hold the data
 		bottomPanel.setLayout((LayoutManager) new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
 		bottomPanel.setBackground(new Color(224, 224, 224));
-		bottomPanel.setLayout(null);
+		bottomPanel.setOpaque(true);
 
 		selectDev = new JComboBox<>(Developers.products());							//Construct a JComboBox named "selectDev", to select an item and view information about this item
 		selectDev.setBounds(20,10,250,25);
@@ -227,7 +227,9 @@ public class SMS_frame extends JFrame {
 				String wh = Utilities.Vlookup(SMS_main.sheet_contract, idDev, 0, 7);
 				String workingHoursPeriod = Utilities.Vlookup(SMS_main.sheet_contract, idDev, 0, 8);
 				path = Utilities.Vlookup(SMS_main.sheet_contract, idDev, 0, 13);
+				bottomPanel.removeAll();
 				
+				if (e_selectDev.getStateChange() == ItemEvent.SELECTED) {
 				firma.setText(companyName);
 				activitate.setText(activityDev);
 				valabilitate.setText(valability);
@@ -296,31 +298,12 @@ public class SMS_frame extends JFrame {
 		                "Nr. factura"};
 
 				JTable table = new JTable(arrayMinusRows, columnNames);
-		        table.setPreferredScrollableViewportSize(new Dimension(1300, 800));
+				table.setPreferredScrollableViewportSize(new Dimension(1200, 600));
 		        table.setFillsViewportHeight(true);
 		        table.setVisible(true);
-
-		        JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(0, 700, 1300, 800);
-		        
-		        scrollPane.add(table);
+		        JScrollPane scrollPane = new JScrollPane(table);
 		        bottomPanel.add(scrollPane);
-//__________________
-		        
-		        int numRows = table.getRowCount();
-		        int numCols = table.getColumnCount();
-		        javax.swing.table.TableModel model = table.getModel();
-
-		        System.out.println("Value of data: ");
-		        for (int i=0; i < numRows; i++) {
-		            System.out.print("    row " + i + ":");
-		            	for (int j=0; j < numCols; j++) {
-		            		System.out.print("  " + model.getValueAt(i, j));
-		            }
-		            System.out.println();
-		        }
-		        System.out.println("--------------------------");
-//___________________		      
+				}
 			}
 		});
 		
@@ -360,8 +343,6 @@ public class SMS_frame extends JFrame {
 		topPanel.add(nrOreLucru);
 		topPanel.add(nrOreLucruPerioada);
 		
-//		bottomPanel.add(scrollPane);
-
 		splitPane.add(topPanel);
 		splitPane.add(bottomPanel);
 		pack();
