@@ -19,7 +19,6 @@ public class SMS_main {
 	final static int inreg_colNum = 22;
 	final static int contract_colNum = 14;
 	final static int listSub_colNum = 4;
-	final static int listFirm_colNum = 2;
 
 	public static void main(String[] args) throws IOException, InvalidFormatException, InterruptedException {
 
@@ -38,8 +37,6 @@ public class SMS_main {
 		sheet_contract = ImportExcel.ArrayListTo2Darray(contract, contract_colNum);
 		listSub = ImportExcel.getExcel("resources/Subcontractori.xlsx", "ListaSubcontractori");
 		sheet_listSub = ImportExcel.ArrayListTo2Darray(listSub, listSub_colNum);
-		listFirm = ImportExcel.getExcel("resources/Subcontractori.xlsx", "ListaFirme");
-		sheet_listFirm = ImportExcel.ArrayListTo2Darray(listFirm, listFirm_colNum);
 
 		Thread.sleep(delay);
 		frameLogo.dispose();
