@@ -47,6 +47,8 @@ public class SMS_frame extends JFrame {
 
 	final DecimalFormat df2 = new DecimalFormat ("0.00");
 	final DecimalFormat df = new DecimalFormat ("###,###");
+	
+	ActionListener al1, al2, al3, al4;
 
 	public SMS_frame() throws InvalidFormatException, FileNotFoundException {
 
@@ -369,60 +371,61 @@ public class SMS_frame extends JFrame {
 					for (int i = 0; i <= 10; i = i + 2) {
 						table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 					}
-
+					
 					table.addMouseListener(new MouseAdapter() {
 						public void mouseClicked(final MouseEvent me) {
-							if(me.getClickCount() == 1) {
-								final JTable target = (JTable)me.getSource();
-								final int row = target.getSelectedRow();
-								final int column = 10;
-								final String factura = (String) target.getValueAt(row, column);
-								final String path_factura = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 18);
-								final String path_proces_verbal = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 19);
-								final String path_comanda_lucru1 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 20);
-								final String path_comanda_lucru2 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 21);
-
-								viewFactura.addActionListener(new ActionListener() {						//Add a Listener for the JButton "viewFactura"
+//							if(me.getClickCount() == 1) {
+								JTable target = (JTable)me.getSource();
+								int row = target.getSelectedRow();
+								int column = 10;
+								String factura = (String) target.getValueAt(row, column);
+								String path_factura = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 18);
+								String path_proces_verbal = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 19);
+								String path_comanda_lucru1 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 20);
+								String path_comanda_lucru2 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 21);
+								
+								viewFactura.removeActionListener(al1);
+								viewFactura.addActionListener(al1 = new ActionListener() {						//Add a Listener for the JButton "viewFactura"
 									public void actionPerformed(ActionEvent arg) {
-										File file = new File(path_factura);
+										File file_factura = new File(path_factura);
 										try {
-											Desktop.getDesktop().open(file);
+											Desktop.getDesktop().open(file_factura);
 										}
 										catch (Exception e_factura) {
 											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
 										}
 									}
 								});	
-
-								viewProcesVerbal.addActionListener(new ActionListener() {					//Add a Listener for the JButton "viewProcesVerbal"
+								viewProcesVerbal.removeActionListener(al2);
+								viewProcesVerbal.addActionListener(al2 = new ActionListener() {					//Add a Listener for the JButton "viewProcesVerbal"
 									public void actionPerformed(ActionEvent arg) {
-										File file = new File(path_proces_verbal);
+										File file_PV = new File(path_proces_verbal);
 										try {
-											Desktop.getDesktop().open(file);
+											Desktop.getDesktop().open(file_PV);
 										}
 										catch (Exception e_proces) {
 											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
 										}
 									}
 								});	
-
-								viewComandaLucru1.addActionListener(new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru1"
+								viewComandaLucru1.removeActionListener(al3);
+								viewComandaLucru1.addActionListener(al3 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru1"
 									public void actionPerformed(ActionEvent arg) {
-										File file = new File(path_comanda_lucru1);
+										File file_CL1 = new File(path_comanda_lucru1);
 										try {
-											Desktop.getDesktop().open(file);
+											Desktop.getDesktop().open(file_CL1);
 										}
 										catch (Exception e_proces) {
 											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
 										}
 									}
 								});	
-
-								viewComandaLucru2.addActionListener(new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru2"
+								viewComandaLucru2.removeActionListener(al4);
+								viewComandaLucru2.addActionListener(al4 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru2"
 									public void actionPerformed(ActionEvent arg) {
-										File file = new File(path_comanda_lucru2);
+										File file_CL2 = new File(path_comanda_lucru2);
 										try {
-											Desktop.getDesktop().open(file);
+											Desktop.getDesktop().open(file_CL2);
 										}
 										catch (Exception e_proces) {
 											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
@@ -430,7 +433,7 @@ public class SMS_frame extends JFrame {
 									}
 								});	
 							}
-						}
+//						}
 					});
 					JScrollPane scrollPane = new JScrollPane(table);
 					centerPanel.add(scrollPane);

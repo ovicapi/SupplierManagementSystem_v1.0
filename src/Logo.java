@@ -47,12 +47,12 @@ public class Logo extends JFrame {
 		by.setFont(new Font("Courier", Font.PLAIN, 22));
 		title.setForeground(Color.BLACK);
 
-		ImageIcon imageIcon = new ImageIcon("resources/logo_intuitext.png");
+		ImageIcon imageIcon = new ImageIcon("resources/logo_softwin.png");
 		
 		JLabel picLabel = new JLabel(imageIcon);
 		picLabel.setPreferredSize(new Dimension(180, 52));
 		Dimension size2 = picLabel.getPreferredSize();
-		picLabel.setBounds(30, 300, size2.width, size2.height);
+		picLabel.setBounds(40, 300, size2.width, size2.height);
 		by.setHorizontalAlignment(SwingConstants.LEFT);
 
 		panelLogo.add(title);
