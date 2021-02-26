@@ -37,7 +37,6 @@ public class Logo extends JFrame {
 		title.setFont(new Font("Verdana", Font.BOLD, 30));
 		title.setForeground(Color.RED);
 
-		
 		JLabel by = new JLabel();
 		by.setText("<html><div style='text-align: center;'>by ovicapi</div></html>");
 		by.setPreferredSize(new Dimension(200, 50));

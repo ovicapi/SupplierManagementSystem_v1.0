@@ -42,7 +42,8 @@ public class SMS_main {
 		frameLogo.dispose();
 		try {
 			MainFrame.mainFrame();
-		} catch (InvalidFormatException e1) {
+		} 
+		catch (InvalidFormatException e1) {
 			e1.printStackTrace();
 		}
 	}

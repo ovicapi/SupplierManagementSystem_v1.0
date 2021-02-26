@@ -18,7 +18,7 @@ public class Utilities {
 		return info;
 	}
 	public static void SetText (String value, String textHeader, String valueToAddOnLabel, JLabel label) {
-		
+
 		if (value.contentEquals("NA") | value.contentEquals(textHeader)) {
 			valueToAddOnLabel = value;
 			label.setText(valueToAddOnLabel);
@@ -34,7 +34,7 @@ public class Utilities {
 			}
 		}
 	}
-	
+
 	public static String GetPath(String[][] sheet, String idDev, String factura, int col) {
 		for (int i = 0; i < sheet.length; i++) {
 			if (sheet[i][0].contentEquals(idDev)) {
@@ -45,5 +45,4 @@ public class Utilities {
 		}
 		return path_factura;
 	}
-}
-
+}	

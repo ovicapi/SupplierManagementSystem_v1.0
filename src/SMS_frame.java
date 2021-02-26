@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -45,9 +45,9 @@ public class SMS_frame extends JFrame {
 	private JComboBox<String> selectDev;
 	private static String path;
 
-	final DecimalFormat df2 = new DecimalFormat ("0.00");
+	final DecimalFormat df2 = new DecimalFormat ("###,###.00");
 	final DecimalFormat df = new DecimalFormat ("###,###");
-	
+
 	ActionListener al1, al2, al3, al4;
 
 	public SMS_frame() throws InvalidFormatException, FileNotFoundException {
@@ -62,16 +62,17 @@ public class SMS_frame extends JFrame {
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		getContentPane().add(splitPane);
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setDividerLocation(120);
+		splitPane.setDividerLocation(130);
 		splitPane.setTopComponent(topPanel);
 		splitPane.setBottomComponent(splitPane2);
 
 		topPanel = new JPanel();													// Construct the topPanel that will hold the selection area
 		topPanel.setLayout(null);
+		topPanel.setBackground(new Color(197, 217, 241));
 
 		centerPanel = new JPanel();													// Construct the centerPanel that will hold the data
 		centerPanel.setLayout((LayoutManager) new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-		centerPanel.setBackground(new Color(224, 224, 224));
+		centerPanel.setBackground(new Color(141, 180, 227));
 		centerPanel.setOpaque(true);
 
 		splitPane2 = new JSplitPane();												// Construct a splitPane that will hold the top and he bottom panels
@@ -84,12 +85,12 @@ public class SMS_frame extends JFrame {
 
 		bottomPanel = new JPanel();													// Construct the topPanel that will hold the selection area
 		bottomPanel.setLayout(null);
-//		bottomPanel.setBackground(new Color(224, 224, 224));
+		bottomPanel.setBackground(new Color(83, 142, 213));
 
 		selectDev = new JComboBox<>(Developers.products());							//Construct a JComboBox named "selectDev", to select an item and view information about this item
 		selectDev.setBounds(20,10,250,25);
 		selectDev.setPreferredSize(new Dimension(400, 25));
-		selectDev.setBackground(Color.WHITE);
+		selectDev.setBackground(new Color(197, 217, 241));
 
 		JButton viewContract = new JButton("Contract");								// Construct a JButton to view the contract for the selected supplier
 		viewContract.setBounds(300, 10, 120, 25);
@@ -101,7 +102,7 @@ public class SMS_frame extends JFrame {
 		dev.setHorizontalAlignment(SwingConstants.CENTER);
 		dev.setFont(new Font("Verdana", Font.BOLD, 22));
 		dev.setOpaque(true);
-		dev.setBackground(new Color(224, 224, 224));
+		dev.setBackground(new Color(141, 180, 227));
 		dev.setForeground(Color.RED);
 
 		JLabel firmaLabel = new JLabel("Firma:");									// Construct a label with the text "Firma:"
@@ -350,90 +351,125 @@ public class SMS_frame extends JFrame {
 					columnNames[9] = "<html><center>Ore<br>lucrate</center></html>";
 					columnNames[10] = "<html><center>Nr.<br>factura</center></html>";
 
-					JTable table = new JTable(arrayMinusRows, columnNames);
+					final DefaultTableModel model = new DefaultTableModel(arrayMinusRows, columnNames);
+					final JTable table = new JTable(model);
+
 					table.setPreferredScrollableViewportSize(new Dimension(1300, 600));
 					table.setFillsViewportHeight(true);
 					table.setVisible(true);
-					table.setBackground(new Color(244,244,244));
-					table.setGridColor(getBackground());
+					table.setBackground(new Color(141, 180, 227));
+					table.setGridColor(new Color(141, 180, 227));
 					table.setFont(new Font("Calibri Light", Font.PLAIN, 15));
 					table.setRowHeight(28);
 					table.getTableHeader().setFont(new Font("Calibri Light", Font.BOLD, 15));
 					table.getTableHeader().setPreferredSize(new Dimension(1300, 60));
+					table.getTableHeader().setBackground(new Color(83, 142, 213));
 
-					DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-					rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-					for (int i = 3; i <= 9; i = i + 2) {
-						table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+					Object[] rowTotal = new Object[11];
+					rowTotal[0] = idDev;
+					rowTotal[1] = "TOTAL";
+					rowTotal[2] = "-";
+					Double total1 = 0.0;
+					for (int i = 0; i < arrayMinusRows.length; i++) {
+						total1 = total1 + Double.parseDouble(arrayMinusRows[i][3]);
 					}
-					DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-					centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-					for (int i = 0; i <= 10; i = i + 2) {
-						table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+					rowTotal[3] = df2.format(total1);
+					rowTotal[4] = arrayMinusRows[0][4];
+					Double total2 =0.0;
+					for (int i = 0; i < arrayMinusRows.length; i++) {
+						total2 = total2 + Double.parseDouble(arrayMinusRows[i][5]);
 					}
-					
+					rowTotal[5] = df2.format(total2);
+					rowTotal[6] = arrayMinusRows[0][6];
+					Double total3 = 0.0;
+					for (int i = 0; i < arrayMinusRows.length; i++) {
+						if (arrayMinusRows[i][7].contentEquals("NA")) {
+							total3 = 0.0;
+						}
+						else {
+							total3 = total3 + Double.parseDouble(arrayMinusRows[i][7]);
+						}
+					}
+					rowTotal[7] = df2.format(total3);
+					rowTotal[8] = arrayMinusRows[0][8];
+					Double total4 = 0.0;
+					for (int i = 0; i < arrayMinusRows.length; i++) {
+						if (arrayMinusRows[i][9].contentEquals("NA")) {
+							total4 = 0.0;
+						}
+						else {
+							total4 = total4 + Double.parseDouble(arrayMinusRows[i][9]);
+						}
+					}
+					rowTotal[9] = df2.format(total4);
+					rowTotal[10] = "-";
+
+					model.addRow(rowTotal);
+
+					LastRowBold colorRenderer = new LastRowBold();
+					table.setDefaultRenderer(Object.class, colorRenderer);
+					table.addRowSelectionInterval(0, table.getRowCount() - 2);
+
 					table.addMouseListener(new MouseAdapter() {
 						public void mouseClicked(final MouseEvent me) {
-//							if(me.getClickCount() == 1) {
-								JTable target = (JTable)me.getSource();
-								int row = target.getSelectedRow();
-								int column = 10;
-								String factura = (String) target.getValueAt(row, column);
-								String path_factura = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 18);
-								String path_proces_verbal = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 19);
-								String path_comanda_lucru1 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 20);
-								String path_comanda_lucru2 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 21);
-								
-								viewFactura.removeActionListener(al1);
-								viewFactura.addActionListener(al1 = new ActionListener() {						//Add a Listener for the JButton "viewFactura"
-									public void actionPerformed(ActionEvent arg) {
-										File file_factura = new File(path_factura);
-										try {
-											Desktop.getDesktop().open(file_factura);
-										}
-										catch (Exception e_factura) {
-											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
-										}
+							JTable target = (JTable)me.getSource();
+							int row = target.getSelectedRow();
+							int column = 10;
+							String factura = (String) target.getValueAt(row, column);
+							String path_factura = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 18);
+							String path_proces_verbal = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 19);
+							String path_comanda_lucru1 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 20);
+							String path_comanda_lucru2 = Utilities.GetPath(SMS_main.sheet_inreg, idDev, factura, 21);
+
+							viewFactura.removeActionListener(al1);
+							viewFactura.addActionListener(al1 = new ActionListener() {						//Add a Listener for the JButton "viewFactura"
+								public void actionPerformed(ActionEvent arg) {
+									File file_factura = new File(path_factura);
+									try {
+										Desktop.getDesktop().open(file_factura);
 									}
-								});	
-								viewProcesVerbal.removeActionListener(al2);
-								viewProcesVerbal.addActionListener(al2 = new ActionListener() {					//Add a Listener for the JButton "viewProcesVerbal"
-									public void actionPerformed(ActionEvent arg) {
-										File file_PV = new File(path_proces_verbal);
-										try {
-											Desktop.getDesktop().open(file_PV);
-										}
-										catch (Exception e_proces) {
-											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
-										}
+									catch (Exception e_factura) {
+										JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
 									}
-								});	
-								viewComandaLucru1.removeActionListener(al3);
-								viewComandaLucru1.addActionListener(al3 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru1"
-									public void actionPerformed(ActionEvent arg) {
-										File file_CL1 = new File(path_comanda_lucru1);
-										try {
-											Desktop.getDesktop().open(file_CL1);
-										}
-										catch (Exception e_proces) {
-											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
-										}
+								}
+							});	
+							viewProcesVerbal.removeActionListener(al2);
+							viewProcesVerbal.addActionListener(al2 = new ActionListener() {					//Add a Listener for the JButton "viewProcesVerbal"
+								public void actionPerformed(ActionEvent arg) {
+									File file_PV = new File(path_proces_verbal);
+									try {
+										Desktop.getDesktop().open(file_PV);
 									}
-								});	
-								viewComandaLucru2.removeActionListener(al4);
-								viewComandaLucru2.addActionListener(al4 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru2"
-									public void actionPerformed(ActionEvent arg) {
-										File file_CL2 = new File(path_comanda_lucru2);
-										try {
-											Desktop.getDesktop().open(file_CL2);
-										}
-										catch (Exception e_proces) {
-											JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
-										}
+									catch (Exception e_proces) {
+										JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
 									}
-								});	
-							}
-//						}
+								}
+							});	
+							viewComandaLucru1.removeActionListener(al3);
+							viewComandaLucru1.addActionListener(al3 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru1"
+								public void actionPerformed(ActionEvent arg) {
+									File file_CL1 = new File(path_comanda_lucru1);
+									try {
+										Desktop.getDesktop().open(file_CL1);
+									}
+									catch (Exception e_proces) {
+										JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
+									}
+								}
+							});	
+							viewComandaLucru2.removeActionListener(al4);
+							viewComandaLucru2.addActionListener(al4 = new ActionListener() {					//Add a Listener for the JButton "viewComandaLucru2"
+								public void actionPerformed(ActionEvent arg) {
+									File file_CL2 = new File(path_comanda_lucru2);
+									try {
+										Desktop.getDesktop().open(file_CL2);
+									}
+									catch (Exception e_proces) {
+										JOptionPane.showMessageDialog(null, "Documentul cautat nu exista");
+									}
+								}
+							});	
+						}
 					});
 					JScrollPane scrollPane = new JScrollPane(table);
 					centerPanel.add(scrollPane);
@@ -491,4 +527,3 @@ public class SMS_frame extends JFrame {
 		pack();
 	}
 }
-
